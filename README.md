@@ -1,25 +1,25 @@
 PagSeguro
 =========
 
-## Installation
+## Instalação
 ```sh 
 $ meteor add gbit:pagseguro
 ```
-
-## Testing (if you clone the package)
+## Testando (caso você queira clonar)
 ```sh 
 $ meteor test-packages ./
 ```
-## PagSeguro documentation
+
+## Documentação no PagSeguro
 - [API de Pagamentos](https://pagseguro.uol.com.br/v3/guia-de-integracao/api-de-pagamentos.html)
 
-## Not implemented yet in this early beta
-- Transactions consultation
-- Payment info handlers
-- Proper payment status infos
+## Não implementado ainda neste novíssimo beta
+- Consultamento de transações
+- Handler dos dados de pagamento
+- Respectivos status de pagamentos
 
-# Setting up
-### Initializing seller data
+# Configurando
+### Definindo os dados do vendedor
 ```js
 Meteor.startup(function(){
 	PagSeguro.settings({
@@ -27,7 +27,7 @@ Meteor.startup(function(){
 		token: 'YOUR_TOKEN'
 	});
 
-	// Default currency is BRL, but you can set another: 
+	// A moeda padrão é o Real, mas você pode definir outra: 
 
 	PagSeguro.settings({
 		email: 'youremail@net.com',
@@ -39,44 +39,38 @@ Meteor.startup(function(){
 
 ### API urls
 Define which URLs PagSeguro should use to send purchases data.
+Defina quais URLs o PagSeguro deve usar para mandar dados das transações.
 ```js
 Meteor.startup(function(){
 	PagSeguro.config.callbackUrls({
-		// PagSeguro are going to sending here infos
-		// concerning your purchase's payment status
+		// PagSeguro ficará mandando aqui infos
+		// sobre o status do pagamento das transações
 		notifications: '/pagseguro_notifications',
-		
-		// successfulPurchase -> Here is to where your user 
-		// will be redirected after leaving PagSeguro's 
-		// payment panel
+
+		// successfulPurchase -> Aqui é para onde seu usuário
+		// será redirectionando depois de sair da tela de pagamento do PagSeguro
 		successfulPurchase: '/pagseguro_confirmation',
 		
-		// After calling `buy.checkout()`, PagSeguro's
-		// will redirect your user with payment's code to here
+		// Depois de chamar `buy.checkout()`, PagSeguro
+		// vai redirecionar o seu usuário com o código do pagamento pra cá
 		confirmationCode: '/pagseguro_response',
 	})
 });
 ```
-### Setting Purchases Mongo Collection
-This package will use a default Mongo Collection if none was informed.
-The default Mongo Collection are available at `PagSeguro.config._purchasesCollection`. 
+### Definindo onde as compras serão salvas no seu banco
 
-But you if want to set a collection of your own:
+Este pacote usará uma Mongo Collection padrão se nenhum for informado.
+A collection padrão está disponível em `PagSeguro.config._purchasesCollection`.
+
+Mas você pode querer configurar uma collection sua:
 ```js
 Meteor.startup(function(){
 	PagSeguro.config.PurchasesCollection(PurchasesCollection);
 });
 ```
-If you want to use SimpleSchema to validade your docs, be sure to add at least this 
-fields in your schema:
+Se você quiser usar o SimpleSchema para validar seus docs, tenha certeza de adicionar pelo menos estes campos no seu schema:
 ```js
 	Schemas.Purchases = new SimpleSchema({
-		// Created automatically while processing the request
-		// with Random.id
-		reference: {
-			type: String
-		},
-
 		items: {
 			type: [Object],
 			label: 'Purchase items'
@@ -86,19 +80,19 @@ fields in your schema:
 			type: Date,
 		},
 
-		// This field are modified by the respective purchase payment
-		// status notified by PagSeguro 
+		// Esse campo será modificado pelos status do pagamento da compra notificados
+		// pelo PagSeguro
 		status: {
 			type: String
 		},
 		
-		// Here goes your client data 
+		// Dados do comprador 
 		sender: {
 			type: Object,
 			label: 'User'
 		},
 
-		// Here goes infos about shipping address 
+		// Dados do endereço de entrega
 		shippingAddress: {
 			type: Object
 		}
@@ -106,10 +100,10 @@ fields in your schema:
 
 	PurchasesCollection.attachSchema(Schemas.Purchases);
 ```
-### Handling sender data
-To say how your sender data will be got, you must define a handler. 
-Ensuring to return an object with the data, available fields are (not all are required):
-*senderName, senderPhone, senderAreaCode, senderEmail, senderCPF, senderBornDate*:
+### Manuseando os dados do comprador
+Para dizer ao pacote como os dados do seu comprador serão pegos, você DEVE definir um handler.
+Assegurando de retornar um objeto com os dados, os disponíveis são (nem todos são requeridos):
+*senderName, senderPhone, senderAreaCode, senderEmail*:
 
 ```js
 // Server code!
@@ -123,18 +117,18 @@ PagSeguro.config.SenderHandler(function(){
 		// You can define others fields that will be saved
 		// in purchase doc but won't go in the request
 		someOtherField: 'I love you',
-		senderName: 'John Doe' 
+		senderName: 'Silvio Santos' 
 		senderPhone: '9999-9999', 
 		senderAreaCode: '99', 
-		senderEmail: 'johndoe@example.net'	
+		senderEmail: 'silviosantos@sbt.com.br'	
 	}
 })
 ```
-That handler will be called while processing your request.
+O handler será chamado durante o processando do request de pagamento.
 
 ### Handling shipping address data
-To say how your shipping address data will be got, you must define a handler. 
-Ensuring to return an object with with the data, available fields are (not all are required):
+Para dizer ao pacote como os dados de entrega do seu comprador serão pegos, você DEVE definir um handler.
+Assegurando de retornar um objeto com os dados, os disponíveis são (nem todos são requeridos):
 *shippingType, shippingAddressStreet, shippingAddressNumber, 
 shippingAddressComplement, shippingAddressDistrict, shippingAddressPostalCode, 
 shippingAddressCity, shippingAddressState', shippingAddressCountry*:
@@ -160,33 +154,28 @@ PagSeguro.config.ShippingHandler(function(){
 	}
 })
 ```
-That handler will be called while processing your request.
+O handler será chamado durante o processando do request de pagamento.
 
-### Using the cart
-Cart items are saved in local minimongo, but thanks to PersistentMinimongo, your user can
-navigate freely through your site and it won't be reseted.
+### Usando o carrinho
+Os items do seu carrinho são salvos no minimongo local (máquina do client), mas graças ao PersistentMinimongo, seu usuário pode navegar livrement pelo site e eles não serão 
+resetados;
 
-To use the items cart just initialize in your CLIENT CODE a new PagSeguro instance.
+Para usar o carrinho de items, apenas crie uma nova instância do PagSeguro no seu client code: 
 ```js
 var buy = new PagSeguro(); 
-
-
 ```
 
-### Adding items to Cart
+### Adicionando itens ao carrinho
 ```js
 buy.addItems({
-	quantity: 1,
-	weight: 0.263, // kg
 	amount: 15.0, // R$ 15,00
 	description: 'Very cool stuff',
-	shippingCost: 0,
 });
 => { _id: '...', description: 'Very cool stuff', amount: 15.0, weight: 0,  }
 ```
-You should pass at least amount and description
+Você deve informar pelo menos a description e o amount
 
-### Removing items from Cart
+### Removendo itens do carrinho
 ```js
 buy.removeItem(itemId)
 
@@ -196,18 +185,19 @@ buy.removeAllItems();
 
 ### Checkout
 ```js
-// You can let the server redirect the user to purchase's payment 
+// Você pode deixar o servidor redirecionar o usuário para o pagamento 
 buy.checkout();
 
-// Or you can do the user redirecting in client side
-// just passing a callback to buy.checkout
+// Ou você pode redirecionar o usuário no client code
+// apenas passando um callback para buy.checkout
 buy.checkout(function(err, response){
 	Router.go(response.paymentUrl);	
 });
 ```
 The items cart will be erased when checkout is fired, but you can say to not:
+Os itens do carrinho serão apagados quando o checkout for disparado, mas você pode dizer pra isso não acontecer:
 ```js
 buy.checkout(false);
-// or
+// ou
 buy.checkout(callback, false);
 ```

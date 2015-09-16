@@ -105,25 +105,25 @@ Assegurando de retornar um objeto com os dados, os disponíveis são (nem todos 
 *senderName, senderPhone, senderAreaCode, senderEmail*:
 
 ```js
-// Server code!
+// Locus: server
 
-PagSeguro.config.SenderHandler(function(){
+PagSeguro.config.SenderHandler(function(userId){
 	// Code of yours here
 	// Doing some amazing stuff
 	// and...
-
+	var user = Meteor.users.findOne(userId);
 	return {
 		// You can define others fields that will be saved
 		// in purchase doc but won't go in the request
 		someOtherField: 'I love you',
-		senderName: 'Silvio Santos' 
-		senderPhone: '9999-9999', 
+		senderName: 'Silvio Santos', 
+		senderPhone: '9999-9999',
 		senderAreaCode: '99', 
 		senderEmail: 'silviosantos@sbt.com.br'	
 	}
 })
 ```
-O handler será chamado durante o processando do request de pagamento.
+O handler será chamado durante o processando do request de pagamento para pegar os dados do comprador, `userId` é a *mongo id* do usuário logado.
 
 ### Handling shipping address data
 Para dizer ao pacote como os dados de entrega do seu comprador serão pegos, você DEVE definir um handler.
@@ -133,9 +133,8 @@ shippingAddressComplement, shippingAddressDistrict, shippingAddressPostalCode,
 shippingAddressCity, shippingAddressState', shippingAddressCountry*:
 
 ```js
-// Server code!
-
-PagSeguro.config.ShippingHandler(function(){
+// Locus: server
+PagSeguro.config.ShippingHandler(function(userId){
 	// Code of yours here
 	// Doing some amazing stuff
 	// and...

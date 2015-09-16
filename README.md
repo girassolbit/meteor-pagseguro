@@ -38,7 +38,6 @@ Meteor.startup(function(){
 ```
 
 ### API urls
-Define which URLs PagSeguro should use to send purchases data.
 Defina quais URLs o PagSeguro deve usar para mandar dados das transações.
 ```js
 Meteor.startup(function(){
@@ -194,7 +193,6 @@ buy.checkout(function(err, response){
 	Router.go(response.paymentUrl);	
 });
 ```
-The items cart will be erased when checkout is fired, but you can say to not:
 Os itens do carrinho serão apagados quando o checkout for disparado, mas você pode dizer pra isso não acontecer:
 ```js
 buy.checkout(false);

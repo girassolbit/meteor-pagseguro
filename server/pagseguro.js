@@ -9,8 +9,8 @@ Meteor.methods({
 			items: items,
 			createdAt: new Date(),
 			status: 'waiting',
-			sender: PagSeguro.config._senderHandler(),
-			shippingAddress: PagSeguro.config._shippingHandler() 
+			sender: PagSeguro.config._senderHandler(this.userId),
+			shippingAddress: PagSeguro.config._shippingHandler(this.userId) 
 		};
 
 		var request = PagSeguroUtils.serializeRequest(purchase);

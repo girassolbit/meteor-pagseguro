@@ -24,7 +24,7 @@ if(Meteor.isServer){
 		);
 	}, {where: 'server'});
 
-	PagSeguro.config.SenderHandler(function(){
+	PagSeguro.config.SenderHandler(function(userId){
 		return {
 			senderName: faker.name.findName(),
 			senderEmail: faker.internet.email(),
@@ -33,7 +33,7 @@ if(Meteor.isServer){
 		}
 	});
 
-	PagSeguro.config.ShippingHandler(function(){
+	PagSeguro.config.ShippingHandler(function(userId){
 		return {
 			shippingType: 1,
 			shippingAddressStreet: faker.address.streetName(),

@@ -17,19 +17,19 @@ PagSeguro.config = {
 		 * in purchase doc in the collection automatically.
 		 * @type {String}
 		 */
-		confirmationCode: '/pagseguro_purchase_code',
+		confirmationCode: 'pagseguro_purchase_code',
 
 		/**
 		 * After getting the purchase code, the user will be redirected to here
 		 * @type {String}
 		 */
-		successfulPurchase: '/pagseguro_confirmation/',
+		successfulPurchase: 'pagseguro_confirmation',
 
 		/**
 		 * PagSeguro will be sending to here changes in purchase status
 		 * @type {String}
 		 */
-		notifications: '/pagseguro_notifications'
+		notifications: 'pagseguro_notifications'
 	},
 
 	callbackUrls: function(urls){

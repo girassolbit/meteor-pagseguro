@@ -2,7 +2,7 @@ Package.describe({
   name: 'gbit:pagseguro',
   version: '0.0.1',
   summary: 'PagSeguro API for Meteor',
-  git: '',
+  git: 'https://github.com/girassolbit/meteor-pagseguro',
   documentation: 'README.md'
 });
 

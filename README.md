@@ -165,7 +165,7 @@ var buy = new PagSeguro();
 
 ### Adicionando itens ao carrinho
 ```js
-buy.addItems({
+buy.addItem({
 	amount: 15.0, // R$ 15,00
 	description: 'Very cool stuff',
 });

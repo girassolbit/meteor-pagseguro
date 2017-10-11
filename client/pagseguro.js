@@ -7,7 +7,7 @@ PagSeguro.API = function(settings){
 	}
 
 	this.token = settings.token;
-	this.email = settings.token;
+	this.email = settings.email;
 
 	return this;
 }
